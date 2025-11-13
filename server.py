@@ -1,87 +1,109 @@
 import os
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import requests
 
-app = Flask(__name__)
+# ==============================
+# 🔧 CONFIG – EDIT THESE
+# ==============================
 
-# Health check so Render knows the service is alive
+# 1) Your Telegram bot token from BotFather
+TELEGRAM_TOKEN = "8503472232:AAHJTB9TbGi-Eak3Qcf5c4wILCK3bNgb-kw"
+
+# 2) Your Telegram numeric chat ID (just the number, no @, no quotes)
+#    Example: 123456789
+ADMIN_CHAT_ID = 1404329479
+# ==============================
+# 🚀 FLASK APP SETUP
+# ==============================
+
+app = Flask(__name__)
+CORS(app)  # allow Netlify frontend to call this API
+
+
 @app.get("/")
 def health():
+    """
+    Simple healthcheck so Render stops crying.
+    """
     return "OK", 200
 
-# Env vars (don't crash if missing)
-BOT_TOKEN = os.environ.get("BOT_TOKEN")
-OWNER_CHAT_ID = os.environ.get("OWNER_CHAT_ID")
 
-# Your booking portal URL
-PORTAL_URL = "https://invalid8th-booking.netlify.app"  # change if your URL is different
+# ==============================
+# 📲 TELEGRAM NOTIFY ENDPOINT
+# ==============================
 
-# Add CORS headers so your Netlify site can call this backend
-@app.after_request
-def add_cors_headers(response):
-    response.headers["Access-Control-Allow-Origin"] = "*"  # allow all origins (Netlify included)
-    response.headers["Access-Control-Allow-Headers"] = "Content-Type"
-    response.headers["Access-Control-Allow-Methods"] = "POST, OPTIONS"
-    return response
-
-# Main endpoint your site calls
-@app.route("/telegram-notify", methods=["POST", "OPTIONS"])
+@app.post("/telegram-notify")
 def telegram_notify():
-    # Handle preflight OPTIONS request
-    if request.method == "OPTIONS":
-        return ("", 204)
+    """
+    Called by the Netlify front-end to ping your Telegram.
 
-    if not BOT_TOKEN or not OWNER_CHAT_ID:
-        return jsonify({"ok": False, "error": "Missing BOT_TOKEN or OWNER_CHAT_ID"}), 500
-
+    Expects JSON body like:
+    {
+      clientName, insta, personalCode, type, date, time,
+      location, basePrice, overlap, status, email, phone, createdAt
+    }
+    """
     data = request.get_json(force=True) or {}
 
-    client_name = data.get("clientName", "Unknown")
-    insta = data.get("insta", "-")
-    code = data.get("personalCode", "-")
-    btype = data.get("type", "-")
-    date = data.get("date", "-")
-    time = data.get("time", "-")
-    location = data.get("location", "-")
-    base_price = data.get("basePrice", 0)
-    overlap = data.get("overlap", False)
-    email = data.get("email") or "-"
-    phone = data.get("phone") or "-"
+    client_name   = data.get("clientName")   or "Unknown"
+    insta         = data.get("insta")        or "-"
+    personal_code = data.get("personalCode") or "-"
+    btype         = data.get("type")         or "-"
+    date_str      = data.get("date")         or "-"
+    time_str      = data.get("time")         or "-"
+    location      = data.get("location")     or "-"
+    base_price    = data.get("basePrice")    or 0
+    overlap       = data.get("overlap")
+    status        = data.get("status")       or "pending"
+    email         = data.get("email")        or "-"
+    phone         = data.get("phone")        or "-"
+
+    overlap_text = "YES (check timing)" if overlap else "No"
 
     text = (
-        "🔥 New Invalid8th booking request\n\n"
-        f"Name: {client_name}\n"
-        f"Insta: @{insta}\n"
-        f"Code: {code}\n"
-        f"Type: {'Lifestyle' if btype == 'lifestyle' else 'Matchday'}\n"
-        f"Date: {date}\n"
-        f"Time: {time}\n"
+        "📸 *INVALID8TH BOOKING (PORTAL SITE)*\n\n"
+        f"Client: {client_name}\n"
+        f"IG: @{insta}\n"
+        f"Code: `{personal_code}`\n\n"
+        f"Type: {btype}\n"
+        f"Date: {date_str}  {time_str}\n"
         f"Location: {location}\n\n"
-        f"Base price: £{base_price} (+ travel)\n"
-        f"Overlap clash: {'YES' if overlap else 'No'}\n\n"
+        f"Base price: £{base_price}\n"
+        f"Overlap / clash: {overlap_text}\n"
+        f"Status: {status}\n\n"
         f"Email: {email}\n"
-        f"Phone: {phone}\n\n"
-        f"Owner panel: {PORTAL_URL}\n"
-        "→ Open, enter owner PIN, confirm/decline & set travel fee.\n\n"
-        "Message to send client (copy, edit TRAVEL & TOTAL):\n"
-        "--------------------------------------------------\n"
-        f"Hi {client_name}, your Invalid8th booking has been reviewed.\n\n"
-        "Here is your final breakdown:\n\n"
-        f"• Session: {'Lifestyle' if btype == 'lifestyle' else 'Matchday'}\n"
-        f"• Date: {date}, {time}\n"
-        f"• Location: {location}\n"
-        f"• Base rate: £{base_price}\n"
-        "• Travel: £[ENTER TRAVEL]\n"
-        "• Final total: £[ENTER TOTAL]\n\n"
-        f"Use your personal code \"{code}\" as the reference and send payment to the bank details on the Invalid8th portal.\n"
-        "Once payment is completed, your appointment is officially locked in."
+        f"Phone: {phone}\n"
     )
 
-    # Send Telegram message
-    resp = requests.get(
-        f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage",
-        params={"chat_id": OWNER_CHAT_ID, "text": text}
-    )
+    # Safety check – don’t crash the site if you forgot to set token / chat id
+    if not TELEGRAM_TOKEN or not ADMIN_CHAT_ID:
+        return jsonify({"ok": False, "error": "Telegram not configured"}), 500
 
-    ok = resp.status_code == 200
-    return jsonify({"ok": ok, "telegram_status": resp.status_code})
+    try:
+        url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
+        resp = requests.post(
+            url,
+            json={
+                "chat_id": ADMIN_CHAT_ID,
+                "text": text,
+                "parse_mode": "Markdown"
+            },
+            timeout=5,
+        )
+        resp.raise_for_status()
+    except Exception as e:
+        # Log on server, but don’t expose full error
+        print("Telegram notify failed:", e)
+        return jsonify({"ok": False, "error": "Failed to send to Telegram"}), 500
+
+    return jsonify({"ok": True})
+
+
+# ==============================
+# 🐍 LOCAL DEV ENTRYPOINT
+# ==============================
+
+if __name__ == "__main__":
+    port = int(os.getenv("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)

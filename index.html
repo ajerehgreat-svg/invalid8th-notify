@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Invalid8th Booking Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #050608;
+      --card: #111217;
+      --accent: #f5c451;
+      --accent-soft: rgba(245,196,81,0.15);
+      --text: #f5f5f5;
+      --muted: #8b8d92;
+      --danger: #ff5c5c;
+      --success: #42d689;
+      --border: #262835;
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: radial-gradient(circle at top, #151623 0, #050608 55%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .wrapper {
+      width: 100%;
+      max-width: 1100px;
+      padding: 24px 16px 40px;
+    }
+
+    .logo-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .brand-title {
+      font-size: 20px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .brand-sub {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .pill {
+      border-radius: 999px;
+      padding: 4px 10px;
+      border: 1px solid var(--accent-soft);
+      color: var(--accent);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      background: rgba(0,0,0,0.4);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.2fr);
+      gap: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card {
+      background: linear-gradient(135deg, rgba(245,196,81,0.02), rgba(255,255,255,0.01));
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 20px 18px 18px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.6);
+      backdrop-filter: blur(14px);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .step-tag {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .divider {
+      height: 1px;
+      background: radial-gradient(circle, rgba(245,196,81,0.4), transparent 60%);
+      opacity: 0.5;
+      margin: 10px 0 16px;
+    }
+
+    .field {
+      margin-bottom: 10px;
+    }
+
+    .field label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .field small {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border-radius: 999px;
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      background: rgba(6,7,11,0.9);
+      color: var(--text);
+      font-size: 13px;
+      outline: none;
+      transition: border 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    textarea {
+      border-radius: 12px;
+      resize: vertical;
+      min-height: 70px;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(245,196,81,0.3);
+      background: rgba(5,6,10,1);
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .btn {
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-size: 13px;
+      padding: 8px 16px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: transparent;
+      color: var(--text);
+      transition: background 0.15s ease, transform 0.07s ease, border 0.15s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #f5c451, #ffdd8c);
+      color: #140c03;
+      font-weight: 600;
+      border-color: rgba(0,0,0,0.9);
+    }
+
+    .btn-ghost {
+      border-color: var(--border);
+      background: rgba(8,9,13,0.7);
+      color: var(--muted);
+    }
+
+    .btn-small {
+      font-size: 11px;
+      padding: 6px 10px;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.03);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+      filter: brightness(0.97);
+    }
+
+    .status {
+      font-size: 12px;
+      margin-top: 6px;
+    }
+
+    .status.error {
+      color: var(--danger);
+    }
+
+    .status.success {
+      color: var(--success);
+    }
+
+    .status.warning {
+      color: var(--accent);
+    }
+
+    .badge {
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      font-size: 11px;
+      padding: 3px 9px;
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--success);
+    }
+
+    .summary-box {
+      border-radius: 12px;
+      border: 1px dashed var(--border);
+      padding: 10px 11px;
+      font-size: 12px;
+      background: rgba(5,6,10,0.9);
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .summary-label {
+      color: var(--muted);
+    }
+
+    .summary-value {
+      font-weight: 500;
+    }
+
+    .summary-total {
+      border-top: 1px solid rgba(255,255,255,0.04);
+      margin-top: 6px;
+      padding-top: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .highlight {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .owner-toggle {
+      text-align: right;
+      margin-bottom: 8px;
+    }
+
+    .owner-panel {
+      margin-top: 8px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 10px 11px;
+      background: rgba(5,6,10,0.95);
+      max-height: 380px;
+      overflow: auto;
+      font-size: 12px;
+    }
+
+    .booking-item {
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      padding: 6px 0;
+    }
+
+    .booking-item:last-child {
+      border-bottom: 0;
+    }
+
+    .booking-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 2px;
+    }
+
+    .booking-tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+
+    .tag {
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    .tag.overlap {
+      border-color: var(--danger);
+      color: var(--danger);
+    }
+
+    .tag.status-confirmed {
+      border-color: var(--success);
+      color: var(--success);
+    }
+
+    .tag.status-declined {
+      border-color: var(--danger);
+      color: var(--danger);
+    }
+
+    .tag.status-pending {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .note-text {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .footer-note {
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+      margin-top: 14px;
+    }
+
+    .accent-line {
+      height: 1px;
+      width: 68px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      margin: 8px 0;
+    }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+  <div class="logo-row">
+    <div>
+      <div class="brand-title">INVALID8TH</div>
+      <div class="brand-sub">Elite Lifestyle Booking Portal</div>
+    </div>
+    <div class="pill">Access code required · No code, no request</div>
+  </div>
+
+  <div class="grid">
+    <!-- LEFT: Member Access + Booking -->
+    <div class="card">
+      <!-- STEP 1: Access Code -->
+      <div id="step1">
+        <div class="card-header">
+          <div class="card-title">
+            <span>Step 1 · Access Portal</span>
+          </div>
+          <span class="step-tag">Private access only</span>
+        </div>
+        <p class="card-desc">
+          This portal is for invited clients only. Use the private access code you
+          were given to unlock booking. <b>No code, no request.</b>
+        </p>
+        <div class="divider"></div>
+
+        <div class="field">
+          <label>
+            Access code
+            <small>Case-insensitive</small>
+          </label>
+          <input id="masterCodeInput" type="password" placeholder="Enter your private access code" />
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" id="unlockBtn">Unlock booking</button>
+          <button class="btn btn-ghost btn-small" id="showCodeHintBtn">
+            Why do I need a code?
+          </button>
+        </div>
+        <div id="masterStatus" class="status" aria-live="polite"></div>
+      </div>
+
+      <!-- STEP 2: Profile / Personal Code -->
+      <div id="step2" style="display:none;">
+        <div class="card-header">
+          <div>
+            <div class="card-title">
+              Step 2 · Member profile
+            </div>
+            <div id="welcomeLine" class="status success" style="display:none;"></div>
+          </div>
+          <span class="step-tag">Personal code</span>
+        </div>
+        <p class="card-desc">
+          Use the master access code once to create your profile. The system will generate
+          your own <b>personal access code</b> using your first name and two numbers.
+          Next time, use that personal code to enter directly.
+        </p>
+        <div class="divider"></div>
+
+        <div id="newMemberForm">
+          <div class="field">
+            <label>First name</label>
+            <input id="firstNameInput" type="text" placeholder="E.g. Kaden" />
+          </div>
+
+          <div class="field">
+            <label>Instagram handle
+              <small>Without @ is fine</small>
+            </label>
+            <input id="instaInput" type="text" placeholder="E.g. invalid8th" />
+          </div>
+
+          <div class="field">
+            <label>Email <small>(For confirmations)</small></label>
+            <input id="emailInput" type="email" placeholder="you@example.com" />
+          </div>
+
+          <div class="field">
+            <label>Phone number <small>(For WhatsApp / SMS confirmations)</small></label>
+            <input id="phoneInput" type="tel" placeholder="+44..." />
+          </div>
+
+          <div class="btn-row">
+            <button class="btn btn-primary" id="createProfileBtn">
+              Create my personal code
+            </button>
+          </div>
+          <div id="profileStatus" class="status" aria-live="polite"></div>
+        </div>
+
+        <div id="existingMemberBox" style="display:none;">
+          <div class="summary-box">
+            <div class="summary-row">
+              <span class="summary-label">Client</span>
+              <span class="summary-value" id="summaryClient"></span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-label">Instagram</span>
+              <span class="summary-value" id="summaryInsta"></span>
+            </div>
+            <div class="summary-total">
+              <span class="summary-label">Personal access code</span>
+              <span class="summary-value highlight" id="summaryCode"></span>
+            </div>
+          </div>
+          <div class="status success" style="margin-top:6px;">
+            Your details are saved on this device. Next time, enter your personal code
+            to be welcomed straight in.
+          </div>
+
+          <div class="btn-row" style="margin-top:10px;">
+            <button class="btn btn-ghost btn-small" id="editProfileBtn">Edit details</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3: Booking form -->
+      <div id="step3" style="display:none; margin-top:18px;">
+        <div class="card-header">
+          <div class="card-title">
+            Step 3 · Request a booking
+          </div>
+          <span class="step-tag">Lifestyle & Matchday</span>
+        </div>
+        <p class="card-desc">
+          Choose your shoot type, date and time. The system will calculate the base price,
+          check for clashes, and generate a confirmation message.
+        </p>
+        <div class="divider"></div>
+
+        <div class="field">
+          <label>Booking type</label>
+          <select id="bookingType">
+            <option value="lifestyle">Lifestyle shoot</option>
+            <option value="matchday">Matchday shoot</option>
+          </select>
+        </div>
+
+        <div class="field" id="hoursField">
+          <label>
+            Hours (lifestyle)
+            <small>£100 per hour · £150 total if less than 2 hours</small>
+          </label>
+          <input id="hoursInput" type="number" min="1" step="1" value="2" />
+        </div>
+
+        <div class="field" id="playersField" style="display:none;">
+          <label>
+            Number of players (same team)
+            <small>For matchday · 1–3 players = £300 total · 4+ = £100 each</small>
+          </label>
+          <input id="playersInput" type="number" min="1" step="1" value="1" />
+        </div>
+
+        <div class="field">
+          <label>Date</label>
+          <input id="dateInput" type="date" />
+        </div>
+
+        <div class="field">
+          <label>Start time</label>
+          <input id="timeInput" type="time" />
+        </div>
+
+        <div class="field">
+          <label>Location</label>
+          <input id="locationInput" type="text" placeholder="Stadium / area / postcode" />
+        </div>
+
+        <div class="field">
+          <label>Extra notes</label>
+          <textarea id="notesInput" placeholder="Any extra details (club, kit colour, mood, etc.)"></textarea>
+        </div>
+
+        <div id="pricingBox" class="summary-box">
+          <div class="summary-row">
+            <span class="summary-label">Shoot type</span>
+            <span class="summary-value" id="summaryType">Lifestyle</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-label">Base price</span>
+            <span class="summary-value" id="summaryBase">£200</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-label">Travel fee</span>
+            <span class="summary-value" id="summaryTravel">To be confirmed based on location</span>
+          </div>
+          <div class="summary-total">
+            <span class="summary-label">Estimated total (excluding travel)</span>
+            <span class="summary-value highlight" id="summaryTotal">£200</span>
+          </div>
+        </div>
+
+        <div id="overlapWarning" class="status warning" style="display:none;">
+          Heads up: there’s already a booking around this time. Your request will be saved
+          as <b>Pending – needs manual approval</b>.
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-primary" id="submitBookingBtn">
+            Submit booking request
+          </button>
+          <button class="btn btn-ghost btn-small" id="previewMessageBtn">
+            Preview confirmation message
+          </button>
+        </div>
+        <div id="bookingStatus" class="status" aria-live="polite"></div>
+
+        <div id="confirmationPreview" class="summary-box" style="margin-top:10px; display:none;"></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Payment details + Owner panel -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">
+            Payment & Confirmation
+          </div>
+         <div class="card-desc" style="margin-bottom:4px;">
+  Once a booking request is saved and payment has been received using their personal code,
+  you confirm the booking manually.
+</div>
+        </div>
+        <span class="badge">
+          <span class="badge-dot"></span>
+          Live status
+        </span>
+      </div>
+
+      <div class="accent-line"></div>
+
+      <div class="field">
+        <label>Bank transfer details</label>
+        <div class="summary-box">
+          <div class="summary-row">
+            <span class="summary-label">Account name</span>
+            <span class="summary-value">GREAT AJEREH</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-label">Sort code</span>
+            <span class="summary-value">04-29-09</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-label">Account number</span>
+            <span class="summary-value">91568455</span>
+          </div>
+          <div class="summary-total">
+            <span class="summary-label">Reference</span>
+            <span class="summary-value highlight">Use your personal access code</span>
+          </div>
+        </div>
+       <div class="status" style="margin-top:4px;">
+  Clients should only pay <b>after</b> their booking request has been saved and you’ve confirmed
+  the final amount privately. They always use their personal code as the payment reference.
+</div>
+      </div>
+
+      <div class="owner-toggle">
+       <button class="btn btn-ghost btn-small" id="previewMessageBtn">
+  View booking message
+</button>
+      </div>
+
+      <div id="ownerLogin" class="field" style="display:none;">
+        <label>
+          Owner PIN
+          <small>Change this in the code</small>
+        </label>
+        <input id="ownerPinInput" type="password" placeholder="Enter owner PIN" />
+        <div class="btn-row" style="margin-top:6px;">
+          <button class="btn btn-primary btn-small" id="ownerLoginBtn">Unlock owner panel</button>
+        </div>
+        <div id="ownerLoginStatus" class="status" aria-live="polite"></div>
+      </div>
+
+      <div id="ownerPanel" class="owner-panel" style="display:none;">
+        <div class="status" style="margin-bottom:4px;">
+          All bookings are stored in this browser using local storage.
+          You can confirm or decline manually.
+        </div>
+        <div id="bookingsList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // --- CONFIG ---
+  const MASTER_CODE = "NHBH";                // master key – only unlocks portal
+  const OWNER_PIN = "KONGDASAVAGE123";       // change this for owner panel
+  const TELEGRAM_NOTIFY_URL = "https://invalid8th-notify.onrender.com/telegram-notify";
+
+  const STORAGE_PROFILE_KEY = "invalid8th_member_profile";
+  const STORAGE_BOOKINGS_KEY = "invalid8th_bookings";
+
+  // --- ELEMENTS ---
+  const step2 = document.getElementById("step2");
+  const step3 = document.getElementById("step3");
+
+  const masterCodeInput = document.getElementById("masterCodeInput");
+  const unlockBtn = document.getElementById("unlockBtn");
+  const showCodeHintBtn = document.getElementById("showCodeHintBtn");
+  const masterStatus = document.getElementById("masterStatus");
+ 
+  const newMemberForm = document.getElementById("newMemberForm");
+  const existingMemberBox = document.getElementById("existingMemberBox");
+  const firstNameInput = document.getElementById("firstNameInput");
+  const instaInput = document.getElementById("instaInput");
+  const emailInput = document.getElementById("emailInput");
+  const phoneInput = document.getElementById("phoneInput");
+  const createProfileBtn = document.getElementById("createProfileBtn");
+  const profileStatus = document.getElementById("profileStatus");
+  const welcomeLine = document.getElementById("welcomeLine");
+
+  const summaryClient = document.getElementById("summaryClient");
+  const summaryInsta = document.getElementById("summaryInsta");
+  const summaryCode = document.getElementById("summaryCode");
+  const editProfileBtn = document.getElementById("editProfileBtn");
+
+  const bookingType = document.getElementById("bookingType");
+  const hoursField = document.getElementById("hoursField");
+  const hoursInput = document.getElementById("hoursInput");
+  const playersField = document.getElementById("playersField");
+  const playersInput = document.getElementById("playersInput");
+  const dateInput = document.getElementById("dateInput");
+  const timeInput = document.getElementById("timeInput");
+  const locationInput = document.getElementById("locationInput");
+  const notesInput = document.getElementById("notesInput");
+  const summaryType = document.getElementById("summaryType");
+  const summaryBase = document.getElementById("summaryBase");
+  const summaryTravel = document.getElementById("summaryTravel");
+  const summaryTotal = document.getElementById("summaryTotal");
+  const overlapWarning = document.getElementById("overlapWarning");
+  const submitBookingBtn = document.getElementById("submitBookingBtn");
+  const previewMessageBtn = document.getElementById("previewMessageBtn");
+  const bookingStatus = document.getElementById("bookingStatus");
+  const confirmationPreview = document.getElementById("confirmationPreview");
+
+  const toggleOwnerBtn = document.getElementById("toggleOwnerBtn");
+  const ownerLogin = document.getElementById("ownerLogin");
+  const ownerPinInput = document.getElementById("ownerPinInput");
+  const ownerLoginBtn = document.getElementById("ownerLoginBtn");
+  const ownerLoginStatus = document.getElementById("ownerLoginStatus");
+  const ownerPanel = document.getElementById("ownerPanel");
+  const bookingsList = document.getElementById("bookingsList");
+
+  // --- HELPERS ---
+  function saveProfile(profile) {
+    localStorage.setItem(STORAGE_PROFILE_KEY, JSON.stringify(profile));
+  }
+
+  function loadProfile() {
+    const raw = localStorage.getItem(STORAGE_PROFILE_KEY);
+    if (!raw) return null;
+    try {
+      return JSON.parse(raw);
+    } catch {
+      return null;
+    }
+  }
+
+  function saveBookings(bookings) {
+    localStorage.setItem(STORAGE_BOOKINGS_KEY, JSON.stringify(bookings));
+  }
+
+  function loadBookings() {
+    const raw = localStorage.getItem(STORAGE_BOOKINGS_KEY);
+    if (!raw) return [];
+    try {
+      const arr = JSON.parse(raw);
+      return Array.isArray(arr) ? arr : [];
+    } catch {
+      return [];
+    }
+  }
+
+  function generatePersonalCode(firstName) {
+    const clean = (firstName || "").trim().toLowerCase();
+    const namePart = clean.replace(/[^a-z]/g, "") || "client";
+    const num = Math.floor(10 + Math.random() * 90); // 10–99
+    return namePart + num;
+  }
+
+  function formatDate(dateStr) {
+    if (!dateStr) return "";
+    const d = new Date(dateStr + "T00:00:00");
+    if (isNaN(d.getTime())) return dateStr;
+    return d.toLocaleDateString(undefined, {
+      weekday: "short",
+      day: "numeric",
+      month: "short",
+      year: "numeric"
+    });
+  }
+
+  function formatTime(timeStr) {
+    if (!timeStr) return "";
+    const [h, m] = timeStr.split(":");
+    const d = new Date();
+    d.setHours(Number(h), Number(m), 0, 0);
+    return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  }
+
+  function calcPricing() {
+    const type = bookingType.value;
+    let base = 0;
+
+    if (type === "lifestyle") {
+      const hours = Number(hoursInput.value || 0);
+      if (hours < 2 && hours > 0) {
+        base = 150;
+      } else if (hours >= 2) {
+        base = hours * 100;
+      } else {
+        base = 0;
+      }
+    } else {
+      const players = Number(playersInput.value || 1);
+      if (players <= 3) {
+        base = 300;
+      } else {
+        base = players * 100;
+      }
+    }
+
+    summaryType.textContent =
+      type === "lifestyle" ? "Lifestyle shoot" : "Matchday shoot";
+    summaryBase.textContent = base ? `£${base}` : "—";
+    summaryTotal.textContent = base ? `£${base}` : "—";
+    summaryTravel.textContent = "To be confirmed based on location";
+
+    return base;
+  }
+
+  function getDateTimeRange(dateStr, timeStr, durationHours) {
+    if (!dateStr || !timeStr) return null;
+    const start = new Date(dateStr + "T" + timeStr + ":00");
+    if (isNaN(start.getTime())) return null;
+    const end = new Date(start.getTime() + durationHours * 60 * 60 * 1000);
+    return { start: start.getTime(), end: end.getTime() };
+  }
+
+  function checkOverlap(dateStr, timeStr, durationHours, bookings) {
+    const range = getDateTimeRange(dateStr, timeStr, durationHours);
+    if (!range) return false;
+    return bookings.some((b) => {
+      if (!b.date || !b.startTime || !b.endTime) return false;
+      const existingStart = b.startTime;
+      const existingEnd = b.endTime;
+      return range.start < existingEnd && range.end > existingStart;
+    });
+  }
+
+  function renderOwnerBookings() {
+    const bookings = loadBookings().sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    if (!bookings.length) {
+      bookingsList.innerHTML =
+        '<div class="status">No bookings yet. When clients request, they’ll appear here.</div>';
+      return;
+    }
+
+    bookingsList.innerHTML = "";
+    bookings.forEach((b) => {
+      const bookingId = b.createdAt; // use this as a stable ID
+
+      const wrapper = document.createElement("div");
+      wrapper.className = "booking-item";
+
+      const header = document.createElement("div");
+      header.className = "booking-header-row";
+      header.innerHTML = `
+        <div>
+          <strong>${b.clientName || "Unknown"}</strong>
+          <span style="color: var(--muted); font-size:11px;"> · ${b.type === "lifestyle" ? "Lifestyle" : "Matchday"}</span>
+        </div>
+        <div style="font-size:11px; color:var(--muted);">
+          ${formatDate(b.date)} · ${formatTime(b.time)}
+        </div>
+      `;
+
+      const tagsRow = document.createElement("div");
+      tagsRow.className = "booking-tag-row";
+
+      const tagCode = document.createElement("span");
+      tagCode.className = "tag";
+      tagCode.textContent = `Code: ${b.personalCode || "-"}`;
+      tagsRow.appendChild(tagCode);
+
+      const tagPrice = document.createElement("span");
+      tagPrice.className = "tag";
+      tagPrice.textContent = `£${b.basePrice || 0} + travel`;
+      tagsRow.appendChild(tagPrice);
+
+      const statusTag = document.createElement("span");
+      statusTag.className = "tag status-" + b.status;
+      statusTag.textContent = b.status.charAt(0).toUpperCase() + b.status.slice(1);
+      tagsRow.appendChild(statusTag);
+
+      if (b.overlap) {
+        const overlapTag = document.createElement("span");
+        overlapTag.className = "tag overlap";
+        overlapTag.textContent = "Clash · needs decision";
+        tagsRow.appendChild(overlapTag);
+      }
+
+      const info = document.createElement("div");
+      info.className = "note-text";
+      info.innerHTML = `
+        <div>Instagram: <b>${b.insta || "-"}</b></div>
+        <div>Location: <b>${b.location || "-"}</b></div>
+        <div>Notes: ${b.notes || "—"}</div>
+      `;
+
+      const actions = document.createElement("div");
+      actions.className = "btn-row";
+      const confirmBtn = document.createElement("button");
+      confirmBtn.className = "btn btn-primary btn-small";
+      confirmBtn.textContent = "Confirm";
+      confirmBtn.onclick = () => updateBookingStatus(bookingId, "confirmed");
+
+      const declineBtn = document.createElement("button");
+      declineBtn.className = "btn btn-ghost btn-small";
+      declineBtn.textContent = "Decline";
+      declineBtn.onclick = () => updateBookingStatus(bookingId, "declined");
+
+      actions.appendChild(confirmBtn);
+      actions.appendChild(declineBtn);
+
+      wrapper.appendChild(header);
+      wrapper.appendChild(tagsRow);
+      wrapper.appendChild(info);
+      wrapper.appendChild(actions);
+
+      bookingsList.appendChild(wrapper);
+    });
+  }
+
+  function updateBookingStatus(bookingId, status) {
+    const bookings = loadBookings();
+    const idx = bookings.findIndex((b) => b.createdAt === bookingId);
+    if (idx === -1) return;
+
+    bookings[idx].status = status;
+    saveBookings(bookings);
+    renderOwnerBookings();
+  }
+
+  function updateConfirmationPreview(basePrice) {
+    const profile = loadProfile();
+    if (!profile) return;
+    const name = profile.firstName || "client";
+    const code = profile.personalCode || "your code";
+
+    const typeLabel = bookingType.value === "lifestyle" ? "lifestyle" : "matchday";
+    const dateLabel = formatDate(dateInput.value) || "[date]";
+    const timeLabel = formatTime(timeInput.value) || "[time]";
+    const loc = locationInput.value || "[location]";
+
+    confirmationPreview.style.display = "block";
+    confirmationPreview.innerHTML = `
+      <b>Booking request saved ✅</b><br/><br/>
+      Your Invalid8th booking request has been received and saved.<br/><br/>
+      <b>Do not send any payment yet.</b><br/><br/>
+      You will receive an SMS from Invalid8th confirming the total price and payment details.<br/><br/>
+      Only pay after that SMS and use your personal code <b>${code}</b> as the reference.
+    `;
+  }
+
+  function notifyTelegram(booking, profile) {
+    if (!TELEGRAM_NOTIFY_URL) return;
+
+    const payload = {
+      clientName: profile?.firstName || booking.clientName,
+      insta: profile?.insta || booking.insta,
+      personalCode: profile?.personalCode || booking.personalCode,
+      type: booking.type,
+      date: booking.date,
+      time: booking.time,
+      location: booking.location,
+      basePrice: booking.basePrice,
+      overlap: booking.overlap,
+      status: booking.status,
+      email: profile?.email || null,
+      phone: profile?.phone || null,
+      createdAt: booking.createdAt,
+    };
+
+    fetch(TELEGRAM_NOTIFY_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    }).catch((err) => {
+      console.error("Telegram notify failed", err);
+    });
+  }
+
+  // --- EVENT HANDLERS ---
+
+  // Unlock with access code
+  unlockBtn.addEventListener("click", () => {
+    const enteredRaw = (masterCodeInput.value || "").trim();
+    const entered = enteredRaw.toLowerCase();
+
+    if (!entered) {
+      masterStatus.textContent = "Enter your access code to continue.";
+      masterStatus.className = "status error";
+      return;
+    }
+
+    const profile = loadProfile();
+
+    // 1) Master key (NHBH) – just unlock, show create profile
+    if (entered === MASTER_CODE.toLowerCase()) {
+      masterStatus.textContent = "Access granted. Use this to create or manage your personal code.";
+      masterStatus.className = "status success";
+
+      step2.style.display = "block";
+      step3.style.display = "block";
+
+      newMemberForm.style.display = "block";
+      existingMemberBox.style.display = "none";
+      welcomeLine.style.display = "none";
+      return;
+    }
+
+    // 2) Personal code – load profile
+    if (profile && entered === (profile.personalCode || "").toLowerCase()) {
+      masterStatus.textContent = "Access granted. Personal profile recognised.";
+      masterStatus.className = "status success";
+
+      step2.style.display = "block";
+      step3.style.display = "block";
+
+      newMemberForm.style.display = "none";
+      existingMemberBox.style.display = "block";
+      welcomeLine.style.display = "block";
+      welcomeLine.textContent = `Welcome back, ${profile.firstName || "client"}.`;
+      summaryClient.textContent = profile.firstName || "—";
+      summaryInsta.textContent = profile.insta ? "@" + profile.insta.replace(/^@/, "") : "—";
+      summaryCode.textContent = profile.personalCode || "—";
+      return;
+    }
+
+    // 3) Anything else → wrong
+    masterStatus.textContent = "Incorrect code. This portal is private – no code, no request.";
+    masterStatus.className = "status error";
+  });
+
+  showCodeHintBtn.addEventListener("click", () => {
+    masterStatus.innerHTML =
+      'This portal is invite-only. Use the private access code you were given directly by Invalid8th. If you don’t have a code, you can’t book.';
+    masterStatus.className = "status";
+  });
+
+  // Create / update profile
+  createProfileBtn.addEventListener("click", () => {
+    const firstName = (firstNameInput.value || "").trim();
+    const insta = (instaInput.value || "").trim();
+    const email = (emailInput.value || "").trim();
+    const phone = (phoneInput.value || "").trim();
+
+    if (!firstName) {
+      profileStatus.textContent = "First name is required.";
+      profileStatus.className = "status error";
+      return;
+    }
+    if (!insta) {
+      profileStatus.textContent = "Instagram handle is required.";
+      profileStatus.className = "status error";
+      return;
+    }
+
+    const existing = loadProfile();
+    // Always generate a fresh personal code for this profile
+    const personalCode = generatePersonalCode(firstName);
+
+    const profile = {
+      firstName,
+      insta: insta.replace(/^@/, ""),
+      email,
+      phone,
+      personalCode
+    };
+    saveProfile(profile);
+
+    profileStatus.textContent = "Saved. Your personal code has been created.";
+    profileStatus.className = "status success";
+
+    newMemberForm.style.display = "none";
+    existingMemberBox.style.display = "block";
+    welcomeLine.style.display = "block";
+    welcomeLine.textContent = `Welcome, ${firstName}.`;
+    summaryClient.textContent = firstName;
+    summaryInsta.textContent = "@" + profile.insta;
+    summaryCode.textContent = personalCode;
+  });
+
+  editProfileBtn.addEventListener("click", () => {
+    const profile = loadProfile();
+    if (profile) {
+      firstNameInput.value = profile.firstName || "";
+      instaInput.value = profile.insta || "";
+      emailInput.value = profile.email || "";
+      phoneInput.value = profile.phone || "";
+    }
+    existingMemberBox.style.display = "none";
+    newMemberForm.style.display = "block";
+    welcomeLine.style.display = "none";
+    profileStatus.textContent = "Update your details and save.";
+    profileStatus.className = "status";
+  });
+
+  // Booking type change
+  bookingType.addEventListener("change", () => {
+    const type = bookingType.value;
+    if (type === "lifestyle") {
+      hoursField.style.display = "block";
+      playersField.style.display = "none";
+    } else {
+      hoursField.style.display = "none";
+      playersField.style.display = "block";
+    }
+    calcPricing();
+  });
+
+  hoursInput.addEventListener("input", calcPricing);
+  playersInput.addEventListener("input", calcPricing);
+
+  // Submit booking
+  submitBookingBtn.addEventListener("click", () => {
+    const profile = loadProfile();
+    if (!profile) {
+      bookingStatus.textContent = "Create your member profile first so we can attach your code.";
+      bookingStatus.className = "status error";
+      return;
+    }
+
+    const type = bookingType.value;
+    const dateStr = dateInput.value;
+    const timeStr = timeInput.value;
+    const location = (locationInput.value || "").trim();
+    const notes = (notesInput.value || "").trim();
+
+    if (!dateStr || !timeStr || !location) {
+      bookingStatus.textContent = "Date, time and location are required.";
+      bookingStatus.className = "status error";
+      return;
+    }
+
+    const basePrice = calcPricing();
+    if (!basePrice) {
+      bookingStatus.textContent = "Set hours / players so we can calculate the price.";
+      bookingStatus.className = "status error";
+      return;
+    }
+
+    const duration = type === "lifestyle"
+      ? Math.max(Number(hoursInput.value || 2), 1)
+      : 2.5; // approx matchday block
+
+    const existing = loadBookings();
+    const hasOverlap = checkOverlap(dateStr, timeStr, duration, existing);
+
+    const range = getDateTimeRange(dateStr, timeStr, duration);
+    const newBooking = {
+      clientName: profile.firstName,
+      insta: profile.insta,
+      personalCode: profile.personalCode,
+      type,
+      date: dateStr,
+      time: timeStr,
+      startTime: range ? range.start : null,
+      endTime: range ? range.end : null,
+      durationHours: duration,
+      location,
+      notes,
+      basePrice,
+      overlap: hasOverlap,
+      status: "pending",
+      createdAt: Date.now()
+    };
+
+    existing.push(newBooking);
+    saveBookings(existing);
+
+    // 🔔 send Telegram notification to you
+    notifyTelegram(newBooking, profile);
+
+    if (hasOverlap) {
+      overlapWarning.style.display = "block";
+      bookingStatus.innerHTML =
+        "Booking saved as <b>Pending</b> because it clashes with another time slot. The owner will manually confirm.";
+      bookingStatus.className = "status warning";
+    } else {
+      overlapWarning.style.display = "none";
+      bookingStatus.innerHTML =
+        "Booking request saved. <b>Do not make any payment yet.</b> You’ll receive a text/message from Invalid8th with your final fee including travel and payment instructions.";
+      bookingStatus.className = "status success";
+    }
+
+    updateConfirmationPreview(basePrice);
+    renderOwnerBookings();
+  });
+
+  // Preview confirmation message
+ previewMessageBtn.addEventListener("click", () => {
+  const basePrice = calcPricing();
+  updateConfirmationPreview(basePrice);
+  bookingStatus.textContent = "Booking message updated.";
+  bookingStatus.className = "status";
+});
+
+  // Owner panel toggle
+  toggleOwnerBtn.addEventListener("click", () => {
+    const isOpen = ownerLogin.style.display === "block" || ownerPanel.style.display === "block";
+    if (isOpen) {
+      ownerLogin.style.display = "none";
+      ownerPanel.style.display = "none";
+      ownerLoginStatus.textContent = "";
+      toggleOwnerBtn.textContent = "Owner view (confirm bookings)";
+    } else {
+      ownerLogin.style.display = "block";
+      toggleOwnerBtn.textContent = "Close owner view";
+    }
+  });
+
+  ownerLoginBtn.addEventListener("click", () => {
+    const entered = (ownerPinInput.value || "").trim();
+    if (entered === OWNER_PIN) {
+      ownerLoginStatus.textContent = "Owner panel unlocked.";
+      ownerLoginStatus.className = "status success";
+      ownerPanel.style.display = "block";
+      renderOwnerBookings();
+    } else {
+      ownerLoginStatus.textContent = "Incorrect PIN.";
+      ownerLoginStatus.className = "status error";
+      ownerPanel.style.display = "none";
+    }
+  });
+
+  // Init pricing
+  calcPricing();
+</script>
+</body>
+</html>

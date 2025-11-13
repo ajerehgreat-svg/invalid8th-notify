@@ -4,12 +4,17 @@ import requests
 
 app = Flask(__name__)
 
-BOT_TOKEN = os.environ["BOT_TOKEN"]          # your Telegram bot token
-OWNER_CHAT_ID = os.environ["OWNER_CHAT_ID"]  # your Telegram user ID
+@app.get("/")
+def health():
+    return "OK", 200
+
+BOT_TOKEN = os.environ.get("BOT_TOKEN")
+OWNER_CHAT_ID = os.environ.get("OWNER_CHAT_ID")
 
 @app.post("/telegram-notify")
 def telegram_notify():
     data = request.get_json(force=True)
+
 
     client_name = data.get("clientName", "Unknown")
     insta = data.get("insta", "-")
@@ -44,3 +49,4 @@ def telegram_notify():
     )
 
     return jsonify({"ok": True})
+

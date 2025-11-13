@@ -4,17 +4,34 @@ import requests
 
 app = Flask(__name__)
 
+# Health check so Render knows the service is alive
 @app.get("/")
 def health():
     return "OK", 200
 
+# Env vars (don't crash app if they're missing)
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
 OWNER_CHAT_ID = os.environ.get("OWNER_CHAT_ID")
 
-@app.post("/telegram-notify")
-def telegram_notify():
-    data = request.get_json(force=True)
+# Add CORS headers so your Netlify site can call this backend
+@app.after_request
+def add_cors_headers(response):
+    response.headers["Access-Control-Allow-Origin"] = "*"  # allow all origins (Netlify included)
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type"
+    response.headers["Access-Control-Allow-Methods"] = "POST, OPTIONS"
+    return response
 
+# Main endpoint your site calls
+@app.route("/telegram-notify", methods=["POST", "OPTIONS"])
+def telegram_notify():
+    # Handle preflight OPTIONS request
+    if request.method == "OPTIONS":
+        return ("", 204)
+
+    if not BOT_TOKEN or not OWNER_CHAT_ID:
+        return jsonify({"ok": False, "error": "Missing BOT_TOKEN or OWNER_CHAT_ID"}), 500
+
+    data = request.get_json(force=True) or {}
 
     client_name = data.get("clientName", "Unknown")
     insta = data.get("insta", "-")
@@ -43,10 +60,11 @@ def telegram_notify():
         f"Phone: {phone}"
     )
 
-    requests.get(
+    # Send Telegram message
+    resp = requests.get(
         f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage",
         params={"chat_id": OWNER_CHAT_ID, "text": text}
     )
 
-    return jsonify({"ok": True})
-
+    ok = resp.status_code == 200
+    return jsonify({"ok": ok, "telegram_status": resp.status_code})

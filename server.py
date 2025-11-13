@@ -45,7 +45,9 @@ def telegram_notify():
     email = data.get("email") or "-"
     phone = data.get("phone") or "-"
 
-    text = (
+   PORTAL_URL = "https://invalid8th-booking.netlify.app/"  # change this to your real site URL
+
+text = (
     "🔥 New Invalid8th booking request\n\n"
     f"Name: {client_name}\n"
     f"Insta: @{insta}\n"
@@ -58,9 +60,22 @@ def telegram_notify():
     f"Overlap clash: {'YES' if overlap else 'No'}\n\n"
     f"Email: {email}\n"
     f"Phone: {phone}\n\n"
-    "Owner panel: https://https://invalid8th-booking.netlify.app/\n"
-    "→ Open, enter owner PIN, confirm/decline & set travel fee."
+    f"Owner panel: {PORTAL_URL}\n"
+    "→ Open, enter owner PIN, confirm/decline & set travel fee.\n\n"
+    "Message to send client (copy, edit TRAVEL & TOTAL):\n"
+    "--------------------------------------------------\n"
+    f"Hi {client_name}, your Invalid8th booking has been reviewed.\n\n"
+    f"Here is your final breakdown:\n\n"
+    f"• Session: {'Lifestyle' if btype == 'lifestyle' else 'Matchday'}\n"
+    f"• Date: {date}, {time}\n"
+    f"• Location: {location}\n"
+    f"• Base rate: £{base_price}\n"
+    f"• Travel: £[ENTER TRAVEL]\n"
+    f"• Final total: £[ENTER TOTAL]\n\n"
+    f"Use your personal code \"{code}\" as the reference and send payment to the bank details on the Invalid8th portal.\n"
+    "Once payment is completed, your appointment is officially locked in."
 )
+
 
 
     # Send Telegram message
@@ -71,4 +86,5 @@ def telegram_notify():
 
     ok = resp.status_code == 200
     return jsonify({"ok": ok, "telegram_status": resp.status_code})
+
 

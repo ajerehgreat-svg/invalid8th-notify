@@ -1,3 +1,6 @@
 flask
 requests
 gunicorn
+python-telegram-bot==21.6
+sqlalchemy
+psycopg2-binary

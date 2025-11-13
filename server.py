@@ -46,19 +46,22 @@ def telegram_notify():
     phone = data.get("phone") or "-"
 
     text = (
-        "🔥 New Invalid8th booking request\n\n"
-        f"Name: {client_name}\n"
-        f"Insta: @{insta}\n"
-        f"Code: {code}\n"
-        f"Type: {'Lifestyle' if btype == 'lifestyle' else 'Matchday'}\n"
-        f"Date: {date}\n"
-        f"Time: {time}\n"
-        f"Location: {location}\n\n"
-        f"Base price: £{base_price} (+ travel)\n"
-        f"Overlap clash: {'YES' if overlap else 'No'}\n\n"
-        f"Email: {email}\n"
-        f"Phone: {phone}"
-    )
+    "🔥 New Invalid8th booking request\n\n"
+    f"Name: {client_name}\n"
+    f"Insta: @{insta}\n"
+    f"Code: {code}\n"
+    f"Type: {'Lifestyle' if btype == 'lifestyle' else 'Matchday'}\n"
+    f"Date: {date}\n"
+    f"Time: {time}\n"
+    f"Location: {location}\n\n"
+    f"Base price: £{base_price} (+ travel)\n"
+    f"Overlap clash: {'YES' if overlap else 'No'}\n\n"
+    f"Email: {email}\n"
+    f"Phone: {phone}\n\n"
+    "Owner panel: https://https://invalid8th-booking.netlify.app/\n"
+    "→ Open, enter owner PIN, confirm/decline & set travel fee."
+)
+
 
     # Send Telegram message
     resp = requests.get(
@@ -68,3 +71,4 @@ def telegram_notify():
 
     ok = resp.status_code == 200
     return jsonify({"ok": ok, "telegram_status": resp.status_code})
+

@@ -34,6 +34,7 @@ def health():
 # ==============================
 
 @app.post("/telegram-notify")
+@app.post("/telegram-notify")
 def telegram_notify():
     """
     Called by the Netlify front-end to ping your Telegram.
@@ -76,8 +77,11 @@ def telegram_notify():
         f"Phone: {phone}\n"
     )
 
-    # Safety check – don’t crash the site if you forgot to set token / chat id
+    # Debug log on the server
+    print(">>> TELEGRAM_NOTIFY payload:", data)
+
     if not TELEGRAM_TOKEN or not ADMIN_CHAT_ID:
+        print(">>> Telegram not configured (missing token or chat id)")
         return jsonify({"ok": False, "error": "Telegram not configured"}), 500
 
     try:
@@ -87,14 +91,14 @@ def telegram_notify():
             json={
                 "chat_id": ADMIN_CHAT_ID,
                 "text": text,
-                "parse_mode": "Markdown"
+                "parse_mode": "Markdown",
             },
             timeout=5,
         )
+        print(">>> Telegram API status:", resp.status_code, resp.text)
         resp.raise_for_status()
     except Exception as e:
-        # Log on server, but don’t expose full error
-        print("Telegram notify failed:", e)
+        print(">>> Telegram notify failed:", e)
         return jsonify({"ok": False, "error": "Failed to send to Telegram"}), 500
 
     return jsonify({"ok": True})
@@ -107,3 +111,4 @@ def telegram_notify():
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
+
